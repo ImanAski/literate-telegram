@@ -6,7 +6,7 @@
 #include <string.h>
 
 void print_usage(void) {
-  printf("\t-v for version\n\t-h for help\n\t-r for REPL");
+  printf("\t-v for version\n\t-h for help\n\t-r for REPL\n");
 }
 void print_version(void) {
   printf("Program %s by Sohpos %s\n", APP_NAME, APP_VERSION);
