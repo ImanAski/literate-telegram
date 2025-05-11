@@ -2,29 +2,17 @@
 #define ENUMS_H
 
 typedef enum {
-  // Commands
-  T_MAKE,
-  T_PLOT,
-  T_EXIT,
-
-  // Operators
-  T_PLUS,
-  T_MINUS,
-  T_MULTIPLY,
-  T_DIVIDE,
-  T_POWER,
-
-  // Misc
-  T_LPAREN,
-  T_RPAREN,
-  T_IDENT,
-  T_EOF,
-
-  // Error
-  T_ERROR,
-
-  // Types
-  T_INTLIT
+  TOK_LET, TOK_FN, TOK_PLOT, TOK_IDENT, TOK_NUMBER, TOK_RANGE,
+  TOK_ASSIGN, TOK_LPAREN, TOK_RPAREN, TOK_COMMENT, TOK_END,
+  TOK_PLUS, TOK_MINUS, TOK_MUL, TOK_DIV, TOK_POW,
 } TokenType;
+
+typedef enum {
+  NODE_EXPR,
+  NODE_ASSIGN,
+  NODE_FUNCDEF,
+  NODE_PLOT,
+  NODE_COMMENT,
+} NodeType;
 
 #endif // !ENUMS_H

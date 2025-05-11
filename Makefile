@@ -12,7 +12,7 @@ export E Q
 PROGRAM = plotter
 
 
-SRC=main.c point.c line.c circle.c repl.c
+SRC=main.c point.c line.c circle.c repl.c utils.c token.c
 
 OBJ=$(SRC:.c=.o)
 
@@ -23,7 +23,7 @@ CC = gcc
 WARNINGS=-Wall -Wstrict-prototypes
 
 
-LIBS=
+LIBS=-lm
 
 LFLAGS=-hbx
 

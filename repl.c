@@ -1,25 +1,13 @@
 
 #include "defs.h"
+#include "structs.h"
+#include "funcs.h"
+#include "enums.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <wctype.h>
-
-#define PREFIX ";"
-
-typedef struct Command {
-  char *name;
-  char *alias;
-  char *description;
-  int (*callback)(const char *);
-} Command;
-
-typedef struct CommandList {
-  Command *commands;
-  size_t count;
-  size_t capacity;
-} CommandList;
 
 CommandList cmd_list = {NULL, 0, 0};
 
@@ -88,7 +76,7 @@ int command_help(const char *args) {
     printf("Available commands:\n");
     for (size_t i = 0; i < cmd_list.count; i++) {
       Command *cmd = &cmd_list.commands[i];
-      printf("%s%s [%s]: %s\n", PREFIX, cmd->name, cmd->alias,
+      printf("%s%s [%s]: %s\n", CMD_PREFIX, cmd->name, cmd->alias,
              cmd->description);
     }
     return REPL_CONTINUE;
@@ -98,7 +86,7 @@ int command_help(const char *args) {
       for (size_t i = 0; i < cmd_list.count; i++) {
         Command *cmd = &cmd_list.commands[i];
         if (strncmp(cmd->name, h_arg, strlen(cmd->name)) == 0) {
-          printf("%s%s [%s]: %s\n", PREFIX, cmd->name,
+          printf("%s%s [%s]: %s\n", CMD_PREFIX, cmd->name,
                  cmd->alias ? cmd->alias : "", cmd->description);
           return REPL_CONTINUE;
         }
