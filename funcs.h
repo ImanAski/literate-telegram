@@ -21,6 +21,8 @@ Rectangle *make_rectangle(Point pts[]);
 
 // repl.c
 void init_repl(void);
+// void init_command_list(size_t inittial_capacity);
+void free_command_list(void);
 
 // ast.c
 AstNode *alloc_node(void);
