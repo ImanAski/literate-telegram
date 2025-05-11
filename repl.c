@@ -8,14 +8,14 @@
 
 #define PREFIX ";"
 
-typedef struct {
+typedef struct Command {
   char *name;
   char *alias;
   char *description;
   int (*callback)(const char *);
 } Command;
 
-typedef struct {
+typedef struct CommandList {
   Command *commands;
   size_t count;
   size_t capacity;
@@ -100,9 +100,6 @@ int command_help(const char *args) {
         if (strncmp(cmd->name, h_arg, strlen(cmd->name)) == 0) {
           printf("%s%s [%s]: %s\n", PREFIX, cmd->name,
                  cmd->alias ? cmd->alias : "", cmd->description);
-          // printf("  %s%s %s %s: %s %s\n", PREFIX, cmd->name,
-          //        cmd->alias ? " (" : "", cmd->alias ? cmd->alias : "",
-          //        cmd->alias ? ")" : "", cmd->description);
           return REPL_CONTINUE;
         }
       }
