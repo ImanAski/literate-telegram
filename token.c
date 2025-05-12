@@ -1,25 +1,27 @@
-#include "funcs.h"
-#include "enums.h"
-#include "structs.h"
 #include "defs.h"
-#include <string.h>
+#include "enums.h"
+#include "funcs.h"
+#include "structs.h"
 #include <ctype.h>
+#include <stdio.h>
+#include <string.h>
 
-
-void tokenize(const char *input, Token *tokens, size_t *token_count, size_t max_tokens) {
+void tokenize(const char *input, Token *tokens, size_t *token_count,
+              size_t max_tokens) {
   *token_count = 0;
   size_t i = 0;
   while (i < strlen(input) && *token_count < max_tokens) {
-    while (isspace(input[i])) i++;
-    if (input[i] == '\0') break;
+    while (isspace(input[i]))
+      i++;
+    if (input[i] == '\0')
+      break;
 
-    printf("%c", input[i]);
     Token tok = {0};
     if (input[i] == '#') {
       tok.type = TOK_COMMENT;
-      tok.value = strdup(input+i);
+      tok.value = strdup(input + i);
       i = strlen(input);
-    } else if (strncmp(input+i, "let", 3) == 0 && !isalnum(input[i + 3])) {
+    } else if (strncmp(input + i, "let", 3) == 0 && !isalnum(input[i + 3])) {
       tok.type = TOK_LET;
       tok.value = strdup("let");
       i += 3;
@@ -32,7 +34,7 @@ void tokenize(const char *input, Token *tokens, size_t *token_count, size_t max_
       tok.value = strdup("plot");
       i += 4;
     } else if (input[i] == ':') {
-      if (input[i + i] == '=') {
+      if (input[i + 1] == '=') {
         tok.type = TOK_ASSIGN;
         tok.value = strdup(":=");
         i += 2;
@@ -47,26 +49,28 @@ void tokenize(const char *input, Token *tokens, size_t *token_count, size_t max_
       tok.type = TOK_RPAREN;
       tok.value = strdup(")");
     } else if (input[i] == '-' && isdigit(input[i + 1])) {
-      size_t start;
-      while (isdigit(input[i]) || input[i] == '.') i++;
+      size_t start = i;
+      while (isdigit(input[i]) || input[i] == '.')
+        i++;
       tok.type = TOK_NUMBER;
       tok.value = strndup(input + start, i - start);
-    } else if (isdigit(input[i])) { 
+    } else if (isdigit(input[i])) {
       size_t start = i;
-      while (isdigit(input[i]) || input[i] == '.') i++;
+      while (isdigit(input[i]) || input[i] == '.')
+        i++;
       tok.type = TOK_NUMBER;
       tok.value = strndup(input + start, i - start);
     } else if (isalnum(input[i])) {
       size_t start = i;
-      while (isalnum(input[i])) i++;
+      while (isalnum(input[i]))
+        i++;
       tok.type = TOK_IDENT;
       tok.value = strndup(input + start, i - start);
     } else if (input[i] == '.' && input[i + 1] == '.') {
       tok.type = TOK_RANGE;
       tok.value = strdup("..");
       i += 2;
-    }
-    else {
+    } else {
       handle_error("Invalid token");
       return;
     }

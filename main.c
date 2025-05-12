@@ -1,7 +1,7 @@
 #include "defs.h"
+#include "enums.h"
 #include "funcs.h"
 #include "structs.h"
-#include "enums.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,7 +44,10 @@ int main(int argc, char **argv) {
 
   tokenize("let f := 5", tokens, &token_count, MAX_TOKENS);
 
-  printf("%p\n", tokens);
+  for (int i = 0; i < token_count; i++) {
+    printf("token type -> %d\ntoken value -> %s\n", tokens[i].type,
+           tokens[i].value);
+  }
 
   Point *pt = make_point(4, 5);
   printf("%s\n", point_to_string(*pt));
