@@ -41,12 +41,32 @@ typedef struct Rectangle {
 typedef struct AstNode {
   NodeType type;
   union {
-    struct { char *expr; } expr; // NODE_EXPR
-    struct { char *var; char *expr; } assign; // NODE_ASSIGN
-    struct { char *name; char *args; char *expr; } funcdef; // NODE_FUNCDEF
-    struct { char *expr; double xmin; double xmax; } plot; // NODE_PLOT
-    struct { char *text; } comment; // NODE_COMMENT
+    double number;
+    char *var;
+    struct {
+      char *name;
+      struct AstNode *arg;
+    } func; // NODE_FUNC
+    struct {
+      char *var;
+      struct AstNode *expr;
+    } assign; // NODE_ASSIGN
+    struct {
+      char *name;
+      char *arg;
+      struct AstNode *expr;
+    } funcdef; // NODE_FUNCDEF
+    struct {
+      struct AstNode *expr;
+      double xmin;
+      double xmax;
+    } plot; // NODE_PLOT
+    struct {
+      char *text;
+    } comment; // NODE_COMMENT
   } data;
+  struct AstNode *left, *right;
+  struct AstNode *next;
 } AstNode;
 
 typedef struct Token {
@@ -74,7 +94,7 @@ typedef struct Command {
 typedef struct Function {
   char *name;
   char *args;
-  char *expr;
+  AstNode *expr;
 } Function;
 
 typedef struct CommandList {

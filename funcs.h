@@ -21,10 +21,11 @@ Rectangle *make_rectangle(Point pts[]);
 
 // repl.c
 void init_repl(void);
-void process_input(const char *input);
+int process_input(const char *input);
 void init_command_list(size_t inittial_capacity);
 void free_command_list(void);
-void register_command(const char *name, const char *alias, const char *description, int (*callback)(const char *));
+void register_command(const char *name, const char *alias,
+                      const char *description, int (*callback)(const char *));
 int execute_command(const char *input);
 void register_commands(void);
 
@@ -33,7 +34,6 @@ int command_quit(const char *args);
 int command_ping(const char *args);
 int command_set(const char *args);
 int command_help(const char *args);
-
 
 // ast.c
 AstNode *alloc_node(void);
@@ -45,14 +45,22 @@ void lexer_init(Lexer *l, const char *input);
 void skip_whitespace(Lexer *l);
 
 // token.c
-void tokenize(const char *input, Token *token, size_t *token_count, size_t max_tokens);
+void tokenize(const char *input);
 Token *current_token(void);
-Token next_token(void);
+void next_token(void);
+
+// parser.c
 AstNode *parse(void);
+AstNode *parse_factor(void);
+AstNode *parse_power(void);
+AstNode *parse_term(void);
+AstNode *parse_expression(void);
+AstNode *parse_statement(void);
 
 // utils.c
 void handle_error(const char *msg);
 char *strdup(const char *s);
 char *strdnup(const char *s, size_t n);
+void free_node(AstNode *node);
 
 #endif

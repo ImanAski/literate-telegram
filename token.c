@@ -6,13 +6,19 @@
 #include <stdio.h>
 #include <string.h>
 
-void tokenize(const char *input, Token *tokens, size_t *token_count,
-              size_t max_tokens) {
-  *token_count = 0;
+Token *current_token() { return &tokens[token_pos]; }
+
+void next_token() {
+  if (token_pos < token_count)
+    (token_pos)++;
+}
+
+void tokenize(const char *input) {
   size_t i = 0;
-  while (i < strlen(input) && *token_count < max_tokens) {
+  while (i < strlen(input) && token_count < MAX_TOKENS) {
     while (isspace(input[i]))
       i++;
+
     if (input[i] == '\0')
       break;
 
@@ -48,9 +54,33 @@ void tokenize(const char *input, Token *tokens, size_t *token_count,
     } else if (input[i] == ')') {
       tok.type = TOK_RPAREN;
       tok.value = strdup(")");
+    } else if (input[i] == ';') {
+      tok.type = TOK_SEMI;
+      tok.value = strdup(";");
+      i++;
+    } else if (input[i] == '+') {
+      tok.type = TOK_PLUS;
+      tok.value = strdup("+");
+      i++;
+    } else if (input[i] == '-') {
+      tok.type = TOK_MINUS;
+      tok.value = strdup("-");
+      i++;
+    } else if (input[i] == '*') {
+      tok.type = TOK_MUL;
+      tok.value = strdup("*");
+      i++;
+    } else if (input[i] == '/') {
+      tok.type = TOK_DIV;
+      tok.value = strdup("/");
+      i++;
+    } else if (input[i] == '^') {
+      tok.type = TOK_POW;
+      tok.value = strdup("^");
+      i++;
     } else if (input[i] == '-' && isdigit(input[i + 1])) {
       size_t start = i;
-      while (isdigit(input[i]) || input[i] == '.')
+      while (isdigit(input[i]) || isdigit(input[i + 1]) || input[i] == '.')
         i++;
       tok.type = TOK_NUMBER;
       tok.value = strndup(input + start, i - start);
@@ -74,8 +104,8 @@ void tokenize(const char *input, Token *tokens, size_t *token_count,
       handle_error("Invalid token");
       return;
     }
-    tokens[(*token_count)++] = tok;
+    tokens[(token_count)++] = tok;
   }
-  tokens[*token_count].type = TOK_END;
-  tokens[*token_count].value = NULL;
+  tokens[token_count].type = TOK_END;
+  tokens[token_count].value = NULL;
 }

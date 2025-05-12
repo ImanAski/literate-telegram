@@ -1,8 +1,8 @@
 
 #include "defs.h"
-#include "structs.h"
-#include "funcs.h"
 #include "enums.h"
+#include "funcs.h"
+#include "structs.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,6 +54,20 @@ int command_quit(const char *args) {
 int command_ping(const char *args) {
   // Ping command
   printf("Pong :)\n");
+  return REPL_CONTINUE;
+}
+
+int command_seyed(const char *args) {
+  if (args && strlen(args) > 0) {
+    char h_arg[64];
+    if (sscanf(args, "%63s", h_arg) != 1) {
+      printf("keke khoria. \n");
+      return REPL_CONTINUE;
+    }
+    printf("Baz khube %s :)\n", args);
+  } else {
+    printf("keke khoria. \n");
+  }
   return REPL_CONTINUE;
 }
 
@@ -136,11 +150,29 @@ void register_commands(void) {
   register_command("ping", ":p", "Ping the system", command_ping);
   register_command("set", NULL, "Set a key-value pair", command_set);
   register_command("help", ":h", "Show help for commands", command_help);
+  register_command("seyed", ":m", "Seyed Simulator", command_seyed);
   printf("System Loaded\n");
 }
 
+int process_input(const char *input) {
+  if (strlen(input) == 0)
+    return REPL_CONTINUE;
+
+  if (input[0] == ';') {
+    return execute_command(input);
+  }
+
+  tokenize(input);
+  token_pos = 0;
+  AstNode *node = parse();
+  if (!node)
+    return REPL_CONTINUE;
+  printf("%d\n", node->type);
+  return REPL_CONTINUE;
+}
+
 void init_repl(void) {
-  char input[64];
+  char input[MAX_INPUT];
 
   // Register Commands
   register_commands();
@@ -152,19 +184,9 @@ void init_repl(void) {
   printf("> ");
   while (fgets(input, sizeof(input), stdin)) {
     input[strcspn(input, "\n")] = '\0';
-
-    if (strlen(input) == 0) {
-      printf("> ");
-      continue;
-    }
-
-    int status = execute_command(input);
+    int status = process_input(input);
     if (status == 0)
       break;
-    if (status == -1) {
-      printf("You typed %s\n", input);
-    }
-
     printf("> ");
   }
   free_command_list();

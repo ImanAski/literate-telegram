@@ -7,17 +7,17 @@
 #include <string.h>
 
 // Global State
-static Command commands[MAX_COMMANDS];
-static size_t command_count = 0;
-static Function functions[MAX_FUNCTIONS];
-static size_t function_count = 0;
-static double variables[26];
-static Token tokens[MAX_TOKENS];
-static size_t token_count = 0;
-static size_t token_pos = 0;
-static Token math_tokens[MAX_TOKENS];
-static size_t math_token_count = 0;
-static size_t math_token_pos = 0;
+// static Command commands[MAX_COMMANDS];
+// static size_t command_count = 0;
+// static Function functions[MAX_FUNCTIONS];
+// static size_t function_count = 0;
+// static double variables[26];
+// static Token tokens[MAX_TOKENS];
+// static size_t token_count = 0;
+// static size_t token_pos = 0;
+// static Token math_tokens[MAX_TOKENS];
+// static size_t math_token_count = 0;
+// static size_t math_token_pos = 0;
 
 void print_usage(void) {
   printf("\t-v for version\n\t-h for help\n\t-r for REPL\n");
@@ -27,6 +27,11 @@ void print_version(void) {
 }
 
 int main(int argc, char **argv) {
+
+  command_count = 0;
+  function_count = 0;
+  token_count = 0;
+  token_pos = 0;
 
   if (argc == 2) {
     if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
@@ -42,7 +47,8 @@ int main(int argc, char **argv) {
     }
   }
 
-  tokenize("let f := 5", tokens, &token_count, MAX_TOKENS);
+  tokenize("let f := 5");
+  tokenize("let r := -10");
 
   for (int i = 0; i < token_count; i++) {
     printf("token type -> %d\ntoken value -> %s\n", tokens[i].type,
