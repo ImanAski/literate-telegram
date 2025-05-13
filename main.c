@@ -49,10 +49,12 @@ int main(int argc, char **argv) {
 
   tokenize("let f := 5");
   tokenize("let r := -10");
+  tokenize("var r string;");
 
   for (int i = 0; i < token_count; i++) {
-    printf("token type -> %d\ntoken value -> %s\n", tokens[i].type,
-           tokens[i].value);
+    print_token(tokens[i]);
+    /*printf("token type -> %d\ntoken value -> %s\n", tokens[i].type,*/
+    /*       tokens[i].value);*/
   }
 
   Point *pt = make_point(4, 5);

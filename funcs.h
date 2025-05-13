@@ -48,6 +48,7 @@ void skip_whitespace(Lexer *l);
 void tokenize(const char *input);
 Token *current_token(void);
 void next_token(void);
+void print_token(Token t);
 
 // parser.c
 AstNode *parse(void);
