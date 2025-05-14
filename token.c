@@ -3,105 +3,62 @@
 #include "funcs.h"
 #include "structs.h"
 #include <ctype.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 
+// Lookup table for token names
+static const char *token_names[] = {[TOK_LET] = "let",
+                                    [TOK_FN] = "function",
+                                    [TOK_IMPORT] = "import",
+                                    [TOK_TRUE] = "true",
+                                    [TOK_FALSE] = "false",
+                                    [TOK_PLOT] = "plot",
+                                    [TOK_IDENT] = "identifier",
+                                    [TOK_NUMBER] = "number",
+                                    [TOK_RANGE] = "range",
+                                    [TOK_ASSIGN] = "assign",
+                                    [TOK_LPAREN] = "left parenthesis",
+                                    [TOK_RPAREN] = "right parenthesis",
+                                    [TOK_COMMENT] = "comment",
+                                    [TOK_END] = "end",
+                                    [TOK_PLUS] = "plus",
+                                    [TOK_MINUS] = "minus",
+                                    [TOK_MUL] = "multiply",
+                                    [TOK_DIV] = "division",
+                                    [TOK_POW] = "power",
+                                    [TOK_SEMI] = "semicolon",
+                                    [TOK_LBRACE] = "l brace",
+                                    [TOK_RBRACE] = "r brace",
+                                    [TOK_LCBRACE] = "LC brace",
+                                    [TOK_RCBRACE] = "RC brace",
+                                    [TOK_PLUSEQ] = "plus equal",
+                                    [TOK_MINUSEQ] = "minus equal",
+                                    [TOK_VAR] = "var",
+                                    [TOK_WHILE] = "while",
+                                    [TOK_FOR] = "for",
+                                    [TOK_IF] = "if",
+                                    [TOK_ELF] = "elf",
+                                    [TOK_ELSE] = "else",
+                                    [TOK_COLON] = "colon",
+                                    [TOK_DOT] = "dot",
+                                    [TOK_CONST] = "const",
+                                    [TOK_PIPE] = "|",
+                                    [TOK_GT] = ">",
+                                    [TOK_LT] = "<",
+                                    [TOK_QUOTE] = "'",
+                                    [TOK_DBLQUOTE] = "\"",
+                                    [TOK_IN] = "in",
+                                    [TOK_DO] = "do",
+                                    [TOK_ATSIGN] = "@",
+                                    [TOK_EXMARK] = "!"};
+
 void print_token(Token t) {
-  switch (t.type) {
-  case TOK_LET:
-    printf("{let} with value of %s\n", t.value);
-    break;
-  case TOK_FN:
-    printf("{function} with value of %s\n", t.value);
-    break;
-  case TOK_PLOT:
-    printf("{plot} with value of %s\n", t.value);
-    break;
-  case TOK_IDENT:
-    printf("{identifier} with value of %s\n", t.value);
-    break;
-  case TOK_NUMBER:
-    printf("{number} with value of %s\n", t.value);
-    break;
-  case TOK_RANGE:
-    printf("{range} with value of %s\n", t.value);
-    break;
-  case TOK_ASSIGN:
-    printf("{assign} with value of %s\n", t.value);
-    break;
-  case TOK_LPAREN:
-    printf("{left parenthesis} with value of %s\n", t.value);
-    break;
-  case TOK_RPAREN:
-    printf("{right parenthesis} with value of %s\n", t.value);
-    break;
-  case TOK_COMMENT:
-    printf("{comment} with value of %s\n", t.value);
-    break;
-  case TOK_END:
-    printf("{end} with value of %s\n", t.value);
-    break;
-  case TOK_PLUS:
-    printf("{plus} with value of %s\n", t.value);
-    break;
-  case TOK_MINUS:
-    printf("{minus} with value of %s\n", t.value);
-    break;
-  case TOK_MUL:
-    printf("{multiply} with value of %s\n", t.value);
-    break;
-  case TOK_DIV:
-    printf("{division} with value of %s\n", t.value);
-    break;
-  case TOK_POW:
-    printf("{power} with value of %s\n", t.value);
-    break;
-  case TOK_SEMI:
-    printf("{semicolon} with value of %s\n", t.value);
-    break;
-  case TOK_LBRACE:
-    printf("{l brace} with value of %s\n", t.value);
-    break;
-  case TOK_RBRACE:
-    printf("{r brace} with value of %s\n", t.value);
-    break;
-  case TOK_LCBRACE:
-    printf("{LC brace} with value of %s\n", t.value);
-    break;
-  case TOK_RCBRACE:
-    printf("{RC brace} with value of %s\n", t.value);
-    break;
-  case TOK_PLUSEQ:
-    printf("{plus equal} with value of %s\n", t.value);
-    break;
-  case TOK_MINUSEQ:
-    printf("{minus equal} with value of %s\n", t.value);
-    break;
-  case TOK_VAR:
-    printf("{var} with value of %s\n", t.value);
-    break;
-  case TOK_WHILE:
-    printf("{while} with value of %s\n", t.value);
-    break;
-  case TOK_FOR:
-    printf("{for} with value of %s\n", t.value);
-    break;
-  case TOK_IF:
-    printf("{if} with value of %s\n", t.value);
-    break;
-  case TOK_ELF:
-    printf("{elf} with value of %s\n", t.value);
-    break;
-  case TOK_ELSE:
-    printf("{else} with value of %s\n", t.value);
-    break;
-  case TOK_COLON:
-    printf("{colon} with value of %s\n", t.value);
-    break;
-  case TOK_DOT:
-    printf("{dot} with value of %s\n", t.value);
-    break;
-    break;
+  if (t.type >= 0 && t.type < sizeof(token_names) / sizeof(token_names[0]) &&
+      token_names[t.type]) {
+    printf("{%s} with value of %s\n", token_names[t.type], t.value);
+  } else {
+    printf("{unknonw token with value of %s\n", t.value);
   }
 }
 
@@ -150,6 +107,30 @@ void tokenize(const char *input) {
       tok.type = TOK_FOR;
       tok.value = strdup("for");
       i += 3;
+    } else if (strncmp(input + i, "while", 5) == 0 && !isalnum(input[i + 5])) {
+      tok.type = TOK_FOR;
+      tok.value = strdup("while");
+      i += 5;
+    } else if (strncmp(input + i, "const", 5) == 0 && !isalnum(input[i + 5])) {
+      tok.type = TOK_FOR;
+      tok.value = strdup("const");
+      i += 5;
+    } else if (strncmp(input + i, "import", 6) == 0 && !isalnum(input[i + 6])) {
+      tok.type = TOK_FOR;
+      tok.value = NULL;
+      i += 6;
+    } else if (strncmp(input + i, "true", 4) == 0 && !isalnum(input[i + 4])) {
+      tok.type = TOK_TRUE;
+      tok.value = NULL;
+      i += 4;
+    } else if (strncmp(input + i, "false", 5) == 0 && !isalnum(input[i + 5])) {
+      tok.type = TOK_TRUE;
+      tok.value = NULL;
+      i += 5;
+    } else if (strncmp(input + i, "do", 2) == 0 && !isalnum(input[i + 2])) {
+      tok.type = TOK_FOR;
+      tok.value = strdup("do");
+      i += 2;
     } else if (input[i] == ':') {
       if (input[i + 1] == '=') {
         tok.type = TOK_ASSIGN;
@@ -160,6 +141,30 @@ void tokenize(const char *input) {
         tok.value = strdup(":");
         i++;
       }
+    } else if (input[i] == '>') {
+      tok.type = TOK_GT;
+      tok.value = strdup(">");
+      i++;
+    } else if (input[i] == '<') {
+      tok.type = TOK_LT;
+      tok.value = strdup("<");
+      i++;
+    } else if (input[i] == '@') {
+      tok.type = TOK_ATSIGN;
+      tok.value = strdup("@");
+      i++;
+    } else if (input[i] == '|') {
+      tok.type = TOK_PIPE;
+      tok.value = strdup("|");
+      i++;
+    } else if (input[i] == '\'') {
+      tok.type = TOK_QUOTE;
+      tok.value = strdup("'");
+      i++;
+    } else if (input[i] == '"') {
+      tok.type = TOK_DBLQUOTE;
+      tok.value = strdup("\"");
+      i++;
     } else if (input[i] == '(') {
       tok.type = TOK_LPAREN;
       tok.value = strdup("(");
@@ -222,13 +227,13 @@ void tokenize(const char *input) {
       i++;
     } else if (input[i] == '-' && isdigit(input[i + 1])) {
       size_t start = i;
-      while (isdigit(input[i]) || isdigit(input[i + 1]) || input[i] == '.')
+      while (isdigit(input[i]) || isdigit(input[i + 1]) || input[i] == '_')
         i++;
       tok.type = TOK_NUMBER;
       tok.value = strndup(input + start, i - start);
     } else if (isdigit(input[i])) {
       size_t start = i;
-      while (isdigit(input[i]) || input[i] == '.')
+      while (isdigit(input[i]) || input[i] == '_')
         i++;
       tok.type = TOK_NUMBER;
       tok.value = strndup(input + start, i - start);

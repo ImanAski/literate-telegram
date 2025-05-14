@@ -47,9 +47,11 @@ int main(int argc, char **argv) {
     }
   }
 
-  tokenize("let f := 5");
-  tokenize("let r := -10");
+  tokenize("let f := 5;");
+  tokenize("const r := -10;");
   tokenize("var r string;");
+  tokenize("1_000_000;");
+  tokenize("for i in 1..5 {};");
 
   for (int i = 0; i < token_count; i++) {
     print_token(tokens[i]);

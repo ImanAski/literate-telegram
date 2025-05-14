@@ -37,6 +37,8 @@ typedef struct Rectangle {
 //   void (*func)(float, float);
 //   int argc;
 // } Command;
+typedef struct File {
+} File;
 
 typedef struct AstNode {
   NodeType type;

@@ -11,7 +11,7 @@ AstNode *parse(void) {
   while (token_pos < token_count && current_token()->type != TOK_END) {
     AstNode *node = parse_statement();
     if (!node) {
-      // free_node(head);
+      free_node(head);
       return NULL;
     }
     if (head == NULL) {
@@ -46,7 +46,7 @@ AstNode *parse_factor(void) {
       node->data.func.arg = parse_factor();
       if (current_token()->type != TOK_RPAREN) {
         handle_error("Expected )");
-        // free_node(node);
+        free_node(node);
         return NULL;
       }
       next_token();
@@ -67,7 +67,7 @@ AstNode *parse_factor(void) {
     node = parse_expression();
     if (current_token()->type != TOK_RPAREN) {
       handle_error("Expected )");
-      // free_node(node);
+      free_node(node);
       return NULL;
     }
     next_token();

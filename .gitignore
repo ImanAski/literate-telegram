@@ -1,1 +1,6 @@
+# this was for when there was no seperate 
+# build/ folder, but who knows
 *.o
+
+# ignoring the build folder
+build/

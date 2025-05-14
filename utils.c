@@ -45,6 +45,13 @@ void free_node(AstNode *node) {
   case NODE_COMMENT:
     free(node->data.comment.text);
     break;
+  case NODE_NUMBER:
+  case NODE_PLUS:
+  case NODE_MINUS:
+  case NODE_MUL:
+  case NODE_DIV:
+  case NODE_POW:
+    break;
   }
   free_node(node->left);
   free_node(node->right);
