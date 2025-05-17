@@ -22,6 +22,7 @@
 void print_usage(void) {
   printf("\t-v for version\n\t-h for help\n\t-r for REPL\n");
 }
+
 void print_version(void) {
   printf("Program %s by Sohpos %s\n", APP_NAME, APP_VERSION);
 }
@@ -48,16 +49,14 @@ int main(int argc, char **argv) {
   }
 
   tokenize("let f := 5;");
-  tokenize("const r := -10;");
-  tokenize("var r string;");
-  tokenize("1_000_000;");
-  tokenize("for i in 1..5 {};");
+  // tokenize("# hello this is a comment");
+  nparse();
 
-  for (int i = 0; i < token_count; i++) {
-    print_token(tokens[i]);
-    /*printf("token type -> %d\ntoken value -> %s\n", tokens[i].type,*/
-    /*       tokens[i].value);*/
-  }
+  // for (int i = 0; i < token_count; i++) {
+  //   print_token(tokens[i]);
+  //   /*printf("token type -> %d\ntoken value -> %s\n", tokens[i].type,*/
+  //   /*       tokens[i].value);*/
+  // }
 
   Point *pt = make_point(4, 5);
   printf("%s\n", point_to_string(*pt));

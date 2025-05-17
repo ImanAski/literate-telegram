@@ -1,6 +1,7 @@
 #ifndef FUNCS_H
 #define FUNCS_H
 
+#include "enums.h"
 #include "structs.h"
 
 // point.c
@@ -48,7 +49,21 @@ void skip_whitespace(Lexer *l);
 void tokenize(const char *input);
 Token *current_token(void);
 void next_token(void);
+void prev_token(void);
+int token_end(void);
 void print_token(Token t);
+
+// nparse.c
+void expect(TokenType type, char *msg);
+void nparse(void);
+AstNode *nparse_statement(void);
+AstNode *new_node(NodeType type);
+AstNode *parse_let_assign(void);
+AstNode *nparse_comment(void);
+AstNode *nparse_expression(void);
+void print_node(AstNode *node, int indent);
+void print_ast(AstNode *node);
+void print_tabs(int nums);
 
 // parser.c
 AstNode *parse(void);

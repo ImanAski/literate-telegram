@@ -15,7 +15,7 @@ TESTDIR=tests
 PROGRAM = build/plotter
 TEST_PROGRAM = build/tests/test_runner
 
-SRC=main.c point.c line.c circle.c repl.c utils.c token.c globals.c parser.c
+SRC=main.c point.c line.c circle.c repl.c utils.c token.c globals.c parser.c nparse.c
 OBJ=$(SRC:%.c=build/%.o)
 HDR=enums.h funcs.h structs.h defs.h
 

@@ -64,9 +64,26 @@ void print_token(Token t) {
 
 Token *current_token() { return &tokens[token_pos]; }
 
+Token *peek_token(void) {
+  // peeking token
+  return &tokens[token_pos];
+}
+
 void next_token() {
   if (token_pos < token_count)
     (token_pos)++;
+}
+
+void prev_token() {
+  if (token_pos > 0)
+    (token_pos)--;
+}
+
+int token_end(void) {
+  if (token_pos == token_count - 1)
+    return 1;
+
+  return 0;
 }
 
 void tokenize(const char *input) {
@@ -133,7 +150,7 @@ void tokenize(const char *input) {
       i += 2;
     } else if (input[i] == ':') {
       if (input[i + 1] == '=') {
-        tok.type = TOK_ASSIGN;
+        tok.type = TOK_COLONEQ;
         tok.value = strdup(":=");
         i += 2;
       } else {

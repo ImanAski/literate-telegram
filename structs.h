@@ -45,10 +45,16 @@ typedef struct AstNode {
   union {
     double number;
     char *var;
+    char *ident;
+    struct AstNode *expr;
     struct {
       char *name;
       struct AstNode *arg;
     } func; // NODE_FUNC
+    struct {
+      char *ident;
+      struct AstNode *expr;
+    } let_assign; // NODE_LET
     struct {
       char *var;
       struct AstNode *expr;

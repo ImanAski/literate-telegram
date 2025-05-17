@@ -33,6 +33,7 @@ typedef enum {
   TOK_PLUS,     // +
   TOK_PLUSEQ,   // +=
   TOK_MINUSEQ,  // -=
+  TOK_COLONEQ,  // :=
   TOK_VAR,      // var
   TOK_WHILE,    // while
   TOK_FOR,      // for
@@ -53,9 +54,11 @@ typedef enum {
 
 typedef enum {
   NODE_OP,
+  NODE_IDENT,
   NODE_EXPR,
   NODE_NUMBER,
   NODE_VAR,
+  NODE_LET,
   NODE_PLUS,
   NODE_MINUS,
   NODE_MUL,
@@ -66,6 +69,7 @@ typedef enum {
   NODE_FUNCDEF,
   NODE_PLOT,
   NODE_COMMENT,
+  NODE_PROGRAM,
 } NodeType;
 
 #endif // !ENUMS_H
