@@ -49,14 +49,7 @@ int main(int argc, char **argv) {
   }
 
   tokenize("let f := 5;");
-  // tokenize("# hello this is a comment");
   nparse();
-
-  // for (int i = 0; i < token_count; i++) {
-  //   print_token(tokens[i]);
-  //   /*printf("token type -> %d\ntoken value -> %s\n", tokens[i].type,*/
-  //   /*       tokens[i].value);*/
-  // }
 
   Point *pt = make_point(4, 5);
   printf("%s\n", point_to_string(*pt));
