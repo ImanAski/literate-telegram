@@ -59,6 +59,8 @@ void nparse(void);
 AstNode *nparse_statement(void);
 AstNode *new_node(NodeType type);
 AstNode *parse_let_assign(void);
+AstNode *parse_var_assign(void);
+AstNode *parse_fn(void);
 AstNode *nparse_comment(void);
 AstNode *nparse_expression(void);
 void print_node(AstNode *node, int indent);

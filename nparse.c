@@ -27,6 +27,22 @@ const char *node_type_to_string(NodeType type) {
     return "VAR";
   case NODE_LET:
     return "LET";
+  case NODE_OP:
+    return "OPERATION";
+  case NODE_IDENT:
+    return "IDNETIFIER";
+  case NODE_EXPR:
+    return "EXPRESSION";
+  case NODE_PLUS:
+    return "PLUS";
+  case NODE_MINUS:
+    return "MINUS";
+  case NODE_MUL:
+    return "MULTIPLY";
+  case NODE_DIV:
+    return "DIVISION";
+  case NODE_POW:
+    return "POWER";
   default:
     return "UNKNOWN";
   }
@@ -89,24 +105,80 @@ AstNode *parse_let_assign(void) {
   return node;
 }
 
+AstNode *parse_var_assign() {
+  expect(TOK_IDENT, "Expected identifier after var");
+  next_token();
+  Token *ident = current_token();
+  AstNode *node = new_node(NODE_VAR);
+  AstNode *ident_node = new_node(NODE_IDENT);
+
+  ident_node->data.ident = strdup(ident->value);
+  node->left = ident_node;
+
+  expect(TOK_IDENT, "Expected `type` after identidier");
+  next_token();
+
+  Token *type_tok = current_token();
+  AstNode *type_node = new_node(NODE_IDENT);
+  type_node->data.ident = strdup(type_tok->value);
+  node->right = type_node;
+
+  expect(TOK_SEMI, "Expected ';' after assignment");
+  next_token();
+  return node;
+}
+
+AstNode *parse_fn() {
+  expect(TOK_IDENT, "Expected identifier after fn");
+  next_token();
+
+  // root node for function
+  AstNode *root = new_node(NODE_FUNC);
+
+  // function name as identifier
+  AstNode *fn_name = new_node(NODE_IDENT);
+  fn_name->data.ident = strdup(current_token()->value);
+  root->left = fn_name;
+
+  // TODO: should add the arguments between LPAREN and RPAREN for fn arguments
+  expect(TOK_LPAREN, "expected '(' for function");
+  next_token();
+  expect(TOK_RPAREN, "expected ')' for function");
+  next_token();
+
+  // TODO: should add the body between LCBRACE and RCBRACE for fn body
+  expect(TOK_LCBRACE, "expected '{' for function body");
+  next_token();
+  expect(TOK_RCBRACE, "expected '}' for function body");
+  next_token();
+
+  expect(TOK_SEMI, "expected ';' for end of statement");
+  next_token();
+  return root;
+}
+
 void print_node(AstNode *node, int indent) {
   // printig nodes
   if (node == NULL) {
-    printf("<----END---->\n");
+    print_tabs(indent);
+    printf("<----EMPTY---->\n");
     return;
   }
-  printf("node type is %d\n", node->type);
-  // print_tabs(indent);
+
+  print_tabs(indent);
+  printf("node type is {%s}\n", node_type_to_string(node->type));
 
   // left braench
-  // print_tabs(indent);
+  print_tabs(indent);
   printf("left:\n");
   print_node(node->left, indent + 1);
 
   // right branch
-  // print_tabs(indent);
+  print_tabs(indent);
   printf("right:\n");
   print_node(node->right, indent + 1);
+  print_tabs(indent);
+  printf("done\n");
 }
 
 void print_tabs(int nums) {
@@ -133,7 +205,14 @@ AstNode *nparse_statement() {
     AstNode *ln = parse_let_assign();
     return ln;
   case TOK_FN:
+    AstNode *fn = parse_fn();
+    return fn;
+  case TOK_VAR:
+    print_token(*tok);
+    AstNode *vn = parse_var_assign();
+    return vn;
   case TOK_PLOT:
+    return NULL;
   case TOK_COMMENT:
     AstNode *cn = nparse_comment();
     return cn;

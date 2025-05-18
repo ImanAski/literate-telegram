@@ -48,20 +48,24 @@ int main(int argc, char **argv) {
     }
   }
 
-  tokenize("let f := 5;");
+  tokenize("fn hello () {};");
+  // tokenize("let f := 5;");
+  // tokenize("var a string;");
   nparse();
 
-  Point *pt = make_point(4, 5);
-  printf("%s\n", point_to_string(*pt));
-
-  Point *pt2 = make_point(6, 7);
-  printf("%s\n", point_to_string(*pt2));
-
-  Line *ln = make_line(*pt, *pt2);
-  printf("%s\n", line_to_string(*ln));
-
-  Circle *cr = make_circle(*pt, 10);
-  printf("%s\n", circle_to_string(*cr));
+  // TODO: should move these to some tests
+  //
+  // Point *pt = make_point(4, 5);
+  // printf("%s\n", point_to_string(*pt));
+  //
+  // Point *pt2 = make_point(6, 7);
+  // printf("%s\n", point_to_string(*pt2));
+  //
+  // Line *ln = make_line(*pt, *pt2);
+  // printf("%s\n", line_to_string(*ln));
+  //
+  // Circle *cr = make_circle(*pt, 10);
+  // printf("%s\n", circle_to_string(*cr));
 
   return 0;
 }
